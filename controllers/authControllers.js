@@ -77,6 +77,8 @@ exports.getMe = async (req, res) => {
     res.json({
       id: req.user.id,
       username: req.user.username,
+      email: req.user.email,
+      description: req.user.description,
     });
   } catch (err) {
     console.log(err);
