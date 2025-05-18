@@ -2,7 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
-const { readdirSync } = require("fs");
+const fs = require("fs");
 const connectDB = require("./config/db");
 
 const app = express();
@@ -13,16 +13,20 @@ app.use(express.json({ limit: "10mb" }));
 app.use(morgan("dev"));
 app.use(cors());
 
-// readdirSync("./routes").map((file) => {
-//   if (file.endsWith(".js")) {
-//     try {
-//       app.use("/api", require("./routes/" + file));
-//       console.log(`Loading route: ${file}`);
-//     } catch (err) {
-//       console.log(`Error loading route ${file}:`, err);
-//     }
-//   }
-// });
+if (fs.existsSync("./routes")) {
+  readdirSync("./routes").forEach((file) => {
+    if (file.endsWith(".js")) {
+      try {
+        app.use("/api", require("./routes/" + file));
+        console.log(`✅ Loaded route: ${file}`);
+      } catch (err) {
+        console.log(`❌ Error loading route ${file}:`, err);
+      }
+    }
+  });
+} else {
+  console.warn("⚠️  No routes folder found");
+}
 
 app.use((err, req, res, next) => {
   console.error("Unexpected error:", err);
