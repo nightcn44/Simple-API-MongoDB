@@ -63,19 +63,18 @@ exports.login = async (req, res) => {
   }
 };
 
-// exports.getMe = async (req, res) => {
-//   try {
-//     if (!req.user) {
-//       return res.status(401).json({ message: "Unauthorized" });
-//     }
+exports.getMe = async (req, res) => {
+  try {
+    if (!req.user) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
 
-//     res.json({
-//       id: req.user.id,
-//       username: req.user.username,
-//       email: req.user.email,
-//     });
-//   } catch (err) {
-//     console.error(err);
-//     res.status(500).json("Internal server error");
-//   }
-// };
+    res.json({
+      id: req.user.id,
+      username: req.user.username,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json("Internal server error");
+  }
+};

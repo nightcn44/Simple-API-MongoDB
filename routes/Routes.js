@@ -11,6 +11,6 @@ router.delete("/user/:id", authMiddleware, User.deleteUserById);
 
 router.post("/register", Auth.register);
 router.post("/login", Auth.login);
-// router.get("/me", authMiddleware, user.getMe);
+router.get("/me", authMiddleware, User.getMe);
 
 module.exports = router;

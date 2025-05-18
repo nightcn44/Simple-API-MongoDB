@@ -1,7 +1,4 @@
 const User = require("../models/user");
-// const hashPassword = require("../utils/hashPassword");
-// const validatePassword = require("../utils/validatePassword");
-// const { generateToken } = require("../utils/jwtUtils");
 
 exports.getAllUsers = async (req, res) => {
   try {
