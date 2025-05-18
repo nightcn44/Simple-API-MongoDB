@@ -4,23 +4,28 @@ const validatePassword = require("../utils/validatePassword");
 const generateToken = require("../utils/jwtUtils");
 
 exports.register = async (req, res) => {
-  const { username, password, description } = req.body;
+  const { username, email, password, description } = req.body;
 
-  if (!username || !password || !description) {
+  if (!username || !email || !password) {
     return res.status(400).json({ message: "All fields are required" });
   }
 
   try {
-    const existingUser = await User.findOne({ username });
+    const existingUser = await User.findOne({
+      $or: [{ username }, { email }],
+    });
 
     if (existingUser) {
-      return res.status(400).json({ message: "Username is already exists" });
+      return res
+        .status(400)
+        .json({ message: "Username or Email is already exists" });
     }
 
     const hashedPassword = await hashPassword(password);
 
     const newUser = new User({
       username,
+      email,
       password: hashedPassword,
       description,
     });
@@ -29,7 +34,7 @@ exports.register = async (req, res) => {
 
     res.status(201).json({ message: "Register success" });
   } catch (err) {
-    console.error("Register Error:", err);
+    console.log("Register Error:", err);
     res.status(500).json("Internal server error");
   }
 };
