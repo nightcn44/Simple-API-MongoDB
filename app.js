@@ -1,10 +1,9 @@
+require("dotenv").config();
 const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
 const { readdirSync } = require("fs");
 const connectDB = require("./config/db");
-
-require("dotenv").config();
 
 const app = express();
 
