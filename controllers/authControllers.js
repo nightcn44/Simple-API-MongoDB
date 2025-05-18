@@ -12,6 +12,7 @@ exports.register = async (req, res) => {
 
   try {
     const existingUser = await User.findOne({ username });
+
     if (existingUser) {
       return res.status(400).json({ message: "Username is already exists" });
     }
@@ -42,11 +43,13 @@ exports.login = async (req, res) => {
 
   try {
     const existingUser = await User.findOne({ username });
+
     if (!existingUser) {
       return res.status(400).json({ error: "Username not found" });
     }
 
     const isMatch = await validatePassword(password, existingUser.password);
+
     if (!isMatch) {
       return res.status(400).json({ error: "Invalid password" });
     }
@@ -60,19 +63,19 @@ exports.login = async (req, res) => {
   }
 };
 
-exports.getMe = async (req, res) => {
-  try {
-    if (!req.user) {
-      return res.status(401).json({ message: "Unauthorized" });
-    }
+// exports.getMe = async (req, res) => {
+//   try {
+//     if (!req.user) {
+//       return res.status(401).json({ message: "Unauthorized" });
+//     }
 
-    res.json({
-      id: req.user.id,
-      username: req.user.username,
-      email: req.user.email,
-    });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json("Internal server error");
-  }
-};
+//     res.json({
+//       id: req.user.id,
+//       username: req.user.username,
+//       email: req.user.email,
+//     });
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).json("Internal server error");
+//   }
+// };

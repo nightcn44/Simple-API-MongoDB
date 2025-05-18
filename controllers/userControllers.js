@@ -16,14 +16,15 @@ exports.getAllUsers = async (req, res) => {
 
 exports.getUserById = async (req, res) => {
   const userId = req.params.id;
-  try {
-    const getuser = await User.findById(userId);
 
-    if (!getuser) {
+  try {
+    const getUser = await User.findById(userId);
+
+    if (!getUser) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    res.status(200).json(getuser);
+    res.status(200).json(getUser);
   } catch (err) {
     console.log(err);
     res.status(500).json("Internal server error");
@@ -32,26 +33,20 @@ exports.getUserById = async (req, res) => {
 
 exports.updateUserById = async (req, res) => {
   const userId = req.params.id;
+  const { username, password, description } = req.body;
+
   try {
-    const updateData = {};
-
-    if (req.body.username) updateData.username = req.body.username;
-    if (req.body.email) updateData.email = req.body.email;
-
-    if (req.body.password && req.body.password.trim() !== "") {
-      updateData.password = await hashPassword(req.body.password);
-    }
-
-    const updatedUser = await User.findByIdAndUpdate(userId, updateData, {
-      new: true,
-      runValidators: true,
-    });
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { username, password, description },
+      { new: true, runValidators: true }
+    );
 
     if (!updatedUser) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    res.status(200).json(updatedUser);
+    res.json({ message: "User updated", user: updatedUser });
   } catch (err) {
     console.log(err);
     res.status(400).json("Internal server error");
@@ -67,7 +62,7 @@ exports.deleteUserById = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    res.status(200).json({ message: "User deleted successfully" });
+    res.status(200).json({ message: "deleted successfully" });
   } catch (err) {
     console.log(err);
     res.status(400).json("Internal server error");
