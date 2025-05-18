@@ -63,7 +63,7 @@ exports.login = async (req, res) => {
 
     res.status(200).json({ message: "Login successful", token });
   } catch (err) {
-    console.error(err);
+    console.log(err);
     res.status(500).json("Internal server error");
   }
 };
@@ -79,7 +79,7 @@ exports.getMe = async (req, res) => {
       username: req.user.username,
     });
   } catch (err) {
-    console.error(err);
+    console.log(err);
     res.status(500).json("Internal server error");
   }
 };

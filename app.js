@@ -29,7 +29,7 @@ if (fs.existsSync("./routes")) {
 }
 
 app.use((err, req, res, next) => {
-  console.error("Unexpected error:", err);
+  console.log("Unexpected error:", err);
   res.status(500).json({ message: "Something went wrong" });
 });
 

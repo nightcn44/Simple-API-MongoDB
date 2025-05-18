@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 
 const DB = async () => {
   if (!process.env.MONGO_URI) {
-    console.error("❌ MONGO_URI is not defined in the .env file.");
+    console.log("❌ MONGO_URI is not defined in the .env file.");
     process.exit(1);
   }
 
@@ -12,7 +12,7 @@ const DB = async () => {
     await mongoose.connect(process.env.MONGO_URI);
     console.log("✅ MongoDB connected successfully");
   } catch (err) {
-    console.error("❌ Error connecting to MongoDB:", err);
+    console.log("❌ Error connecting to MongoDB:", err);
     process.exit(1);
   }
 };
