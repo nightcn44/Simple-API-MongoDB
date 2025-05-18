@@ -1,4 +1,5 @@
 const User = require("../models/userModels");
+const hashPassword = require("../utils/hashPassword");
 
 exports.getAllUsers = async (req, res) => {
   try {
@@ -33,11 +34,17 @@ exports.updateUserById = async (req, res) => {
   const { username, password, description } = req.body;
 
   try {
-    const updatedUser = await User.findByIdAndUpdate(
-      userId,
-      { username, password, description },
-      { new: true, runValidators: true }
-    );
+    const updateData = { username, description };
+
+    if (password) {
+      const hashedPassword = await hashPassword(password);
+      updateData.password = hashedPassword;
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(userId, updateData, {
+      new: true,
+      runValidators: true,
+    });
 
     if (!updatedUser) {
       return res.status(404).json({ message: "User not found" });
@@ -45,8 +52,8 @@ exports.updateUserById = async (req, res) => {
 
     res.json({ message: "User updated", user: updatedUser });
   } catch (err) {
-    console.log(err);
-    res.status(400).json("Internal server error");
+    console.error(err);
+    res.status(500).json({ message: "Internal server error" });
   }
 };
 
