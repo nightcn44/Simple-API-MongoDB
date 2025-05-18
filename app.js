@@ -2,13 +2,13 @@ const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
 const { readdirSync } = require("fs");
-// const connectDB = require("./config/db");
+const connectDB = require("./config/db");
 
 require("dotenv").config();
 
 const app = express();
 
-// connectDB();
+connectDB();
 
 app.use(express.json({ limit: "10mb" }));
 app.use(morgan("dev"));
